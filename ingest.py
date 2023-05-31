@@ -7,7 +7,7 @@ from langchain.vectorstores import Chroma
 import os
 
 
-os.environ["OPENAI_API_KEY"] = "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"
+os.environ["OPENAI_API_KEY"] = "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"
 
 
 def get_documents(filepath: str, loader_type: str):

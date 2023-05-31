@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Chatbox</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        #chatbox {
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, 3%);
+            width: 80%;
+            max-width: 500px;
+            height: 500px;
+        }
+        #chatbody {
+            overflow: scroll;
+        }
+    </style>
+</head>
+<body>
+    <div id="chatbox" class="card">
+        <div class="card-header">
+            Chatbox
+        </div>
+        <div class="card-body" id="chatbody">
+            <!-- Messages will be appended here -->
+        </div>
+        <div class="card-footer">
+            <form id="messageForm">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="messageInput" placeholder="Type a message...">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary message-send" type="submit">Send</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        var ws = new WebSocket('ws://127.0.0.1:8181');
+        var btn = $('.message-send');
+
+        ws.onmessage = function(event) {
+            var msg = event.data;
+            $('#chatbody').append('<p><strong>Server:</strong> ' + msg + '</p>');
+            btn.prop('disabled', false); // Enable send button when message is received
+        };
+
+        $('#messageForm').submit(function(e) {
+            e.preventDefault();
+            var msg = $('#messageInput').val();
+            ws.send(msg);
+            $('#chatbody').append('<p><strong>Client:</strong> ' + msg + '</p>');
+            $('#messageInput').val('');
+            btn.prop('disabled', true); // Disable send button after sending a message
+        });
+    </script>
+</body>
+</html>

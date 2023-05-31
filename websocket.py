@@ -1,6 +1,8 @@
 import asyncio
 import websockets
 
+from ingest import QuestionAnswer
+
 websocket_users = set()
 
 
@@ -33,12 +35,21 @@ async def recv_user_msg(websocket):
         await websocket.send(response_text)
 
 
+async def ask_llm(websocket):
+    recv_text = await websocket.recv()
+    print("recv_text:", websocket.pong, recv_text)
+    qa = QuestionAnswer(name="test")
+    msg = qa.query(recv_text)
+    await websocket.send(msg)
+
+
 # 服务器端主逻辑
 async def run(websocket, path):
     while True:
         try:
-            await check_user_permit(websocket)
-            await recv_user_msg(websocket)
+            await ask_llm(websocket)
+            # await check_user_permit(websocket)
+            # await recv_user_msg(websocket)
         except websockets.ConnectionClosed:
             print("ConnectionClosed...", path)  # 链接断开
             print("websocket_users old:", websocket_users)
