@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>简单的聊天框界面</title>
+  <style>
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    #chat-box {
+      width: 600px;
+      height: 400px;
+      border: 1px solid black;
+      padding: 10px;
+      overflow: auto;
+      margin: 20px 0;
+    }
+    #message-input {
+      width: 500px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div><input id="file-upload" type="file" /></div>
+    <div id="chat-box"></div>
+    <div>
+      <input id="message-input" type="text" placeholder="输入消息" />
+      <button id="send-button">发送</button>
+    </div>
+  </div>
+</body>
+<script src="chat.js"></script>
+</html>

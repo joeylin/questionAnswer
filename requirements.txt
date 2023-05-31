@@ -1,0 +1,18 @@
+langchain~=0.0.184
+beautifulsoup4 == 4.12.2
+requests~=2.31.0
+lxml~=4.9.2
+chromadb~=0.3.25
+openai~=0.27.7
+tiktoken~=0.4.0
+pydantic~=1.10.8
+tensorflow~=2.12.0
+tensorflow_hub~=0.13.0
+tensorflow_text~=2.12.1
+sentence-transformers~=2.2.2
+torch~=2.0.1
+google-generativeai~=0.1.0
+flask~=2.3.2
+Werkzeug~=2.3.4
+pypdf~=3.9.0
+websockets~=11.0.3

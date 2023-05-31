@@ -1,0 +1,16 @@
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+# database
+docs/
+.vector_persist/
+
+# Mac
+.DS_Store
+
+# Maven
+log/
+target/
