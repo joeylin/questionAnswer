@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
 from ingest import QuestionAnswer
-from threading import Thread
-from websocket import start_websocket
 import os
 
 app = Flask(__name__)
@@ -47,8 +45,5 @@ def start_flask():
 
 
 if __name__ == '__main__':
-    # 这里同时启动两个线程，一个是websocket服务，一个是flask服务
-    ws_server = Thread(target=start_flask)
-    ws_server.start()
-    start_websocket()
+    start_flask()
 
