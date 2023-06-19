@@ -18,11 +18,13 @@ document.getElementById('send-button').addEventListener('click', function() {
   })
   .then(response => response.json())
   .then(data => {
-    var receivedMessageElement = document.createElement('div');
-    receivedMessageElement.textContent = '回复：' + data.msg;
-    receivedMessageElement.className = 'message message-received';
-    chatBox.appendChild(receivedMessageElement);
-    chatBox.scrollTop = chatBox.scrollHeight;
+    $('#chatbody').append('<p><strong>Server:</strong> ' + data.msg + '</p>');
+
+//    var receivedMessageElement = document.createElement('div');
+//    receivedMessageElement.textContent = '回复：' + data.msg;
+//    receivedMessageElement.className = 'message message-received';
+//    chatBox.appendChild(receivedMessageElement);
+//    chatBox.scrollTop = chatBox.scrollHeight;
   });
 });
 
