@@ -4,10 +4,11 @@ from langchain.document_loaders import BSHTMLLoader, PyPDFLoader, CSVLoader
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Chroma
+from dotenv import load_dotenv
 import os
 
-
-os.environ["OPENAI_API_KEY"] = "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"
+load_dotenv()
+print(os.environ["OPENAI_API_KEY"])
 
 
 def get_documents(filepath: str, loader_type: str):

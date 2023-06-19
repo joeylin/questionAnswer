@@ -42,6 +42,7 @@
     $('#messageForm').submit(function(e) {
         e.preventDefault();
         var msg = $('#message-input').val();
+        $('#message-input').val('');
 
         fetch('/query', {  // 后端的API接口
             method: 'POST',
@@ -53,12 +54,10 @@
         .then(response => response.json())
         .then(data => {
             $('#chatbody').append('<p><strong>Server:</strong> ' + data.msg + '</p>');
-            $('#messageInput').val('');
             btn.prop('disabled', false);
         });
 
         $('#chatbody').append('<p><strong>Client:</strong> ' + msg + '</p>');
-        $('#messageInput').val('');
         btn.prop('disabled', true); // Disable send button after sending a message
     });
 </script>

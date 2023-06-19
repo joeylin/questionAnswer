@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
 from ingest import QuestionAnswer
 import os
+import time
 
 app = Flask(__name__)
 
@@ -33,11 +34,19 @@ def upload():
 
 @app.route('/query', methods=['POST'])
 def query():
+    start_time = time.time()
     data = request.get_json()
     print(data)
     qa = QuestionAnswer(name="test")
     msg = qa.query(data['query'])
-    return jsonify({"code": 200, "msg": msg})
+
+    end_time = time.time()  # 记录结束时间
+    elapsed_time = end_time - start_time  # 计算接口调用时间
+
+    # 打印耗时时间
+    print(elapsed_time)
+
+    return jsonify({"code": 200, "msg": msg, "spend": elapsed_time})
 
 
 def start_flask():
