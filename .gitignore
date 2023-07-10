@@ -7,6 +7,7 @@
 # database
 docs/
 .vector_persist/
+__pycache__/
 
 # Mac
 .DS_Store

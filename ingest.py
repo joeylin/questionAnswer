@@ -46,5 +46,6 @@ class QuestionAnswer:
 
     def query(self, query: str) -> str:
         retriever = self.vectordb.as_retriever()
+        retriever.get_relevant_documents("总结下这篇文章的主要观点")
         qa = RetrievalQA.from_chain_type(llm=self.llm, chain_type="stuff", retriever=retriever)
         return qa.run(query)

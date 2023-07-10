@@ -32,6 +32,17 @@ def upload():
     return jsonify({"code": 200, "msg": "上传成功"})
 
 
+@app.route('/api/chatData', methods=['GET','POST'])
+def get_chat_data():
+    data = request.get_json()
+    print(data)
+    chat_data = {
+        "chatId": data["chatId"],
+        "theme": "default",
+        "header": {}
+    }
+    return jsonify({"code": 200, "chatData": chat_data})
+
 @app.route('/query', methods=['POST'])
 def query():
     start_time = time.time()
