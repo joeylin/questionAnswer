@@ -1,7 +1,13 @@
-from langchain import OpenAI
-from langchain.chains import RetrievalQA
+import asyncio
+import logging
+from typing import AsyncIterable, Awaitable
+
+from langchain.chat_models import ChatOpenAI
+from langchain.callbacks import AsyncIteratorCallbackHandler
+from langchain.chains import ConversationalRetrievalChain
 from langchain.document_loaders import BSHTMLLoader, PyPDFLoader, CSVLoader
 from langchain.embeddings import OpenAIEmbeddings
+from langchain.embeddings.base import Embeddings
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Chroma
 from dotenv import load_dotenv
@@ -9,6 +15,8 @@ import os
 
 load_dotenv()
 print(os.environ["OPENAI_API_KEY"])
+logging.basicConfig()
+logging.getLogger("langchain.retrievers.multi_query").setLevel(logging.INFO)
 
 
 def get_documents(filepath: str, loader_type: str):
@@ -22,10 +30,10 @@ def get_documents(filepath: str, loader_type: str):
         raise ValueError(f'Unsupported filetype {loader_type}')
 
 
-class QuestionAnswer:
+class DocumentIngest:
     vectordb: Chroma
     name: str
-    llm: OpenAI
+    embedding: Embeddings
 
     def __init__(self, persist_directory: str = ".vector_persist", name: str = "default") -> None:
         embedding = OpenAIEmbeddings()
@@ -35,7 +43,6 @@ class QuestionAnswer:
             persist_directory=persist_directory,
             embedding_function=embedding
         )
-        self.llm = OpenAI()
 
     def add_file(self, filepath: str, loader_type: str) -> None:
         documents = get_documents(filepath, loader_type)
@@ -43,9 +50,3 @@ class QuestionAnswer:
         texts = text_splitter.split_documents(documents)
         self.vectordb.add_documents(texts)
         self.vectordb.persist()
-
-    def query(self, query: str) -> str:
-        retriever = self.vectordb.as_retriever()
-        retriever.get_relevant_documents("总结下这篇文章的主要观点")
-        qa = RetrievalQA.from_chain_type(llm=self.llm, chain_type="stuff", retriever=retriever)
-        return qa.run(query)
