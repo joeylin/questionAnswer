@@ -7,7 +7,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 
-from default_prompt import WISDOM_QA_PROMPT, WISDOM_CONDENSE_QUESTION_PROMPT
+from default_prompt import WISDOM_CONDENSE_QUESTION_PROMPT, get_custom_qa_prompt
 
 
 class RetrievalAnswer:
@@ -15,6 +15,7 @@ class RetrievalAnswer:
     name: str
     llm: ChatOpenAI
     stream_llm: ChatOpenAI
+    prompt: str
     callback: AsyncIteratorCallbackHandler()
 
     def __init__(self, persist_directory: str = ".vector_persist", name: str = "default") -> None:
@@ -35,20 +36,22 @@ class RetrievalAnswer:
 
     async def stream(self, query: str, history: []) -> AsyncIterable[str]:
         retriever = self.vectordb.as_retriever()
+        prompt_template = get_custom_qa_prompt(self.prompt)
         qa = ConversationalRetrievalChain.from_llm(llm=self.stream_llm,
                                                    retriever=retriever,
                                                    condense_question_llm=self.llm,
                                                    condense_question_prompt=WISDOM_CONDENSE_QUESTION_PROMPT,
-                                                   combine_docs_chain_kwargs={"prompt": WISDOM_QA_PROMPT},
+                                                   combine_docs_chain_kwargs={"prompt": prompt_template},
                                                    verbose=True,
                                                    max_tokens_limit=4000,
                                                    return_source_documents=True)
 
         async def wrap_done(fn: Awaitable, event: asyncio.Event):
-            """Wrap an awaitable with a event to signal when it's done or an exception is raised."""
+            """Wrap an awaitable with an event to signal when it's done or an exception is raised."""
             try:
                 await fn
             except Exception as e:
+                # TODO: Handle exception.
                 print(f"Caught exception: {e}")
             finally:
                 # Signal the aiter to stop.
