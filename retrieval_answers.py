@@ -18,9 +18,10 @@ class RetrievalAnswer:
     prompt: str
     callback: AsyncIteratorCallbackHandler()
 
-    def __init__(self, persist_directory: str = ".vector_persist", name: str = "default") -> None:
+    def __init__(self, persist_directory: str = ".vector_persist", name: str = "default", prompt: str = None) -> None:
         embedding = OpenAIEmbeddings()
         self.name = name
+        self.prompt = prompt
         self.callback = AsyncIteratorCallbackHandler()
         self.vectordb = Chroma(
             collection_name=name,

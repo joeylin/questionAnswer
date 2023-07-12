@@ -21,6 +21,7 @@ templates = Jinja2Templates(directory="templates")
 class QueryRequest(BaseModel):
     """Request body for streaming."""
     question: str
+    prompt: str
     messages: List[str]
 
 
@@ -32,13 +33,13 @@ def index(request: Request):
 @app.post("/stream")
 def stream(body: QueryRequest):
     print(body)
-    qa = RetrievalAnswer(name="test")
+    qa = RetrievalAnswer(name="test", prompt=body.prompt)
     return StreamingResponse(qa.stream(body.question, body.messages), media_type="text/plain")
 
 
 @app.post("/query")
 def query(body: QueryRequest):
-    qa = RetrievalAnswer(name="test")
+    qa = RetrievalAnswer(name="test", prompt=body.prompt)
     return qa.query(body.question, body.messages)
 
 
