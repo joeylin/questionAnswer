@@ -15,7 +15,7 @@ partial_prompt_template = """
 Question: {question}
 Helpful Answer:"""
 
-default_base_prompt = """I want you to act as a document that I am having a conversation with. Your name is "AI Assistant". You will provide me with answers from the given info. If the answer is not included, say exactly "I'm sorry, I don't have the information you're looking for, please contact customer support." and stop after that. Refuse to answer any question not about the info. Never break character."""
+default_base_prompt = """I want you to act as a document that I am having a conversation with. Your name is "AI Assistant". You will provide me with answers from the given info. If the answer is not included, say exactly "I'm sorry, I don't have the information you're looking for, please contact customer support." and stop after that. Refuse to answer any question not about the info. Never break character. In your answer, start a different key point in another paragraph."""
 
 
 def get_custom_qa_prompt(base_prompt: str = None) -> PromptTemplate:
