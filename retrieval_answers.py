@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from typing import Awaitable, AsyncIterable
 
 from langchain.callbacks import AsyncIteratorCallbackHandler
@@ -8,6 +9,9 @@ from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 
 from default_prompt import WISDOM_CONDENSE_QUESTION_PROMPT, get_custom_qa_prompt
+
+logging.basicConfig()
+logging.getLogger("langchain.retrievers.multi_query").setLevel(logging.INFO)
 
 
 class RetrievalAnswer:

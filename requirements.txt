@@ -19,3 +19,4 @@ python-dotenv==1.0.0
 fastapi~=0.96.0
 uvicorn~=0.22.0
 starlette~=0.27.0
+oss2~=2.18.0
